@@ -1,0 +1,13 @@
+{
+	"name": "fs-web",
+	"version": "0.1.0",
+	"dependencies": [
+		"fx[2]",
+		"citizen:resources:core",
+		"citizen:scripting:core",
+		"citizen:server:instance",
+		"citizen:server:net",
+		"citizen:server:impl"
+	],
+	"provides": []
+}
