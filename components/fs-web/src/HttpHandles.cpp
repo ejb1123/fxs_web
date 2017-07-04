@@ -5,10 +5,12 @@
 #include <ResourceManager.h>
 #include <VFSManager.h>
 
-#include <botan/base64.h>
+#include <botan\bcrypt.h>
+#include <base64.h>
 #include <json.hpp>
 #include <fs_utils.h>
 using json = nlohmann::json;
+bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password);
 
 static InitFunction initFunction([]()
 {
@@ -84,22 +86,15 @@ static InitFunction initFunction([]()
 		static auto infoData = std::make_shared<InfoData>();
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>& request, const fwRefContainer<net::HttpResponse>& response)
 		{
-			auto auth = request->GetHeader("auth");
 
 			auto rcon_password = instance->GetComponent<fx::GameServer>()->GetRconPassword();
-			trace(rcon_password.c_str(),"fivem-web");
 
-			if(auth.compare(rcon_password)){
-				response->SetStatusCode(403);
-				response->Write("");
-				response->End();
-			}
-			else
+			if (isAuthed(request, response, rcon_password)) 
 			{
 				infoData->Update();
 				response->End(infoData->infoJson.dump());
+
 			}
-				
 		});
 
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
@@ -112,3 +107,41 @@ static InitFunction initFunction([]()
 	}, 1500);
 }
 );
+bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password)
+{
+	if (request->GetHeader("Authorization") == std::string()) {
+		response->SetStatusCode(401);
+		response->SetHeader("WWW-Authenticate", "BASIC realm=\"hdhdn\"");
+		response->Write("");
+		response->End();
+		return false;
+	}
+	else if (request->GetHeader("Authorization").length() > 0)
+	{
+
+
+		auto auth = request->GetHeader("Authorization");
+		std::string srvpass("Basic ");
+		auto const pass = ":" + rcon_password;
+		auto buf_sz = size_t();
+		auto const buf_ptr
+			= base64_encode
+			(reinterpret_cast<const unsigned char*>(pass.c_str())
+				, pass.size()
+				, &buf_sz
+			);
+		srvpass.append(buf_ptr, buf_ptr + buf_sz);
+		free(buf_ptr);
+
+		if (!srvpass.compare(auth))
+		{
+			return true;
+		}
+		else
+		{
+			response->SetStatusCode(403);
+			response->End("");
+			return false;
+		}
+	}
+}
