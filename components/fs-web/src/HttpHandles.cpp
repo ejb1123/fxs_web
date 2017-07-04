@@ -1,17 +1,13 @@
 ﻿#include "StdInc.h"
 #include <ServerInstanceBase.h>
 #include <HttpServerManager.h>
-#include <ClientRegistry.h>
-
+#include <GameServer.h>
 #include <ResourceManager.h>
-
 #include <VFSManager.h>
 
 #include <botan/base64.h>
-
 #include <json.hpp>
 #include <fs_utils.h>
-
 using json = nlohmann::json;
 
 static InitFunction initFunction([]()
@@ -55,7 +51,7 @@ static InitFunction initFunction([]()
 					infoJson["vars"][name] = var->GetValue();
 				}, ConVar_ServerInfo);
 
-				
+
 
 				infoJson["version"] = 0;
 
@@ -64,7 +60,7 @@ static InitFunction initFunction([]()
 
 				infoJson["resources"] = json::object();
 				infoJson["resources"]["hardcap"] = json::object();
-				
+
 				auto resman = instanceRef->GetComponent<fx::ResourceManager>();
 				resman->ForAllResources([&](fwRefContainer<fx::Resource> resource)
 				{
@@ -86,15 +82,29 @@ static InitFunction initFunction([]()
 		};
 
 		static auto infoData = std::make_shared<InfoData>();
-		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fs-web", [=](const fwRefContainer<net::HttpRequest>& request, const fwRefContainer<net::HttpResponse>& response)
+		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>& request, const fwRefContainer<net::HttpResponse>& response)
 		{
-			infoData->Update();
-			response->End(infoData->infoJson.dump());
+			auto auth = request->GetHeader("auth");
+
+			auto rcon_password = instance->GetComponent<fx::GameServer>()->GetRconPassword();
+			trace(rcon_password.c_str(),"fivem-web");
+
+			if(auth.compare(rcon_password)){
+				response->SetStatusCode(403);
+				response->Write("");
+				response->End();
+			}
+			else
+			{
+				infoData->Update();
+				response->End(infoData->infoJson.dump());
+			}
+				
 		});
 
-		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fs-web", [](const fwRefContainer<net::HttpRequest>&request,const fwRefContainer<net::HttpResponse>& response)
+		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
-			if (request->GetRequestMethod()=="POST")
+			if (request->GetRequestMethod() == "POST")
 			{
 
 			}
