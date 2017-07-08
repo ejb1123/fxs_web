@@ -9,6 +9,8 @@
 #include <base64.h>
 #include <json.hpp>
 #include <fs_utils.h>
+#include <console\Console.VariableHelpers.h>
+
 using json = nlohmann::json;
 bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password);
 
@@ -39,7 +41,6 @@ static InitFunction initFunction([]()
 			void Update()
 			{
 				auto varman = instanceRef->GetComponent<console::Context>()->GetVariableManager();
-
 				infoJson["vars"] = json::object();
 
 				varman->ForAllVariables([&](const std::string& name, int flags, const std::shared_ptr<internal::ConsoleVariableEntryBase>& var)
@@ -51,7 +52,7 @@ static InitFunction initFunction([]()
 					}
 
 					infoJson["vars"][name] = var->GetValue();
-				}, ConVar_ServerInfo);
+				}, 0b111);
 
 
 
@@ -88,8 +89,8 @@ static InitFunction initFunction([]()
 		{
 
 			auto rcon_password = instance->GetComponent<fx::GameServer>()->GetRconPassword();
-
-			if (isAuthed(request, response, rcon_password)) 
+			
+			if (fs::isAuthed(request, response, rcon_password)) 
 			{
 				infoData->Update();
 				response->End(infoData->infoJson.dump());
@@ -107,41 +108,3 @@ static InitFunction initFunction([]()
 	}, 1500);
 }
 );
-bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password)
-{
-	if (request->GetHeader("Authorization") == std::string()) {
-		response->SetStatusCode(401);
-		response->SetHeader("WWW-Authenticate", "BASIC realm=\"hdhdn\"");
-		response->Write("");
-		response->End();
-		return false;
-	}
-	else if (request->GetHeader("Authorization").length() > 0)
-	{
-
-
-		auto auth = request->GetHeader("Authorization");
-		std::string srvpass("Basic ");
-		auto const pass = ":" + rcon_password;
-		auto buf_sz = size_t();
-		auto const buf_ptr
-			= base64_encode
-			(reinterpret_cast<const unsigned char*>(pass.c_str())
-				, pass.size()
-				, &buf_sz
-			);
-		srvpass.append(buf_ptr, buf_ptr + buf_sz);
-		free(buf_ptr);
-
-		if (!srvpass.compare(auth))
-		{
-			return true;
-		}
-		else
-		{
-			response->SetStatusCode(403);
-			response->End("");
-			return false;
-		}
-	}
-}
