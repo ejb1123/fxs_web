@@ -18,20 +18,12 @@ struct InfoData
 	json infoJson;
 	int infoHash;
 	fx::ServerInstanceBase *instanceRef;
-	std::shared_ptr<ConVar<int>> ivVar;
-	std::shared_ptr<ConVar<int>> maxClientsVar;
-	std::shared_ptr<ConVar<bool>> epPrivacy;
 
 	InfoData(fx::ServerInstanceBase *instance)
 		: infoHash(0), infoJson({ { "server", "FXServer-pre" },{ "enhancedHostSupport", true },{ "resources",{} } }),instanceRef(instance)
 	{
 		static auto instanceRef = instance;
-		ivVar = instance->AddVariable<int>("sv_infoVersion", ConVar_ServerInfo, 0);
-		maxClientsVar = instance->AddVariable<int>("sv_maxClients", ConVar_ServerInfo, 30);
-		epPrivacy = instance->AddVariable<bool>("sv_endpointPrivacy", ConVar_None, false);
-
-		// max clients cap
-		maxClientsVar->GetHelper()->SetConstraints(1, 32);
+		
 		Update();
 	}
 
@@ -39,7 +31,6 @@ struct InfoData
 	{
 		auto varman = instanceRef->GetComponent<console::Context>()->GetVariableManager();
 		infoJson["vars"] = json::object();
-
 		varman->ForAllVariables([&](const std::string& name, int flags, const std::shared_ptr<internal::ConsoleVariableEntryBase>& var)
 		{
 			// don't return more variable information
@@ -74,9 +65,5 @@ struct InfoData
 			char* state = fs::StateToString(resource);
 			infoJson["resources"][resource->GetName()]["state"] = (state);
 		});
-
-
-
-		ivVar->GetHelper()->SetRawValue(infoHash);
 	}
 };

@@ -20,11 +20,8 @@ static InitFunction initFunction([]()
 	{
 		static auto infoData = std::make_shared<InfoData>(instance);
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>& request, const fwRefContainer<net::HttpResponse>& response)
-		{
-
-			auto rcon_password = instance->GetComponent<fx::GameServer>()->GetRconPassword();
-			
-			if (fs::isAuthed(request, response, rcon_password)) 
+		{			
+			if (fs::isAuthed(request, response, instance)) 
 			{
 				infoData->Update();
 				response->End(infoData->infoJson.dump());
@@ -32,7 +29,7 @@ static InitFunction initFunction([]()
 			}
 		});
 		
-		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
+		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
 			if (request->GetRequestMethod() == "POST")
 			{

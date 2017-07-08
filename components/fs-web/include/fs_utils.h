@@ -1,4 +1,6 @@
 ﻿#include <ResourceManager.h>
+#include <console\Console.VariableHelpers.h>
+#include "StdInc.h"
 #pragma once
 namespace fs {
 	static char * StateToString(fwRefContainer<fx::Resource> resource) {
@@ -23,8 +25,16 @@ namespace fs {
 		}
 		return state;
 	}
-	 bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password)
+	std::string GetPassword(fx::ServerInstanceBase *instance);
+	std::string GetUserName(fx::ServerInstanceBase *instance);
+
+	bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, fx::ServerInstanceBase *instance)
 	{
+		auto fx_password = fs::GetPassword(instance);
+		auto fx_username = fs::GetUserName(instance);
+		if (fx_username.length() == 0 && fx_password.length() == 0) {
+			return true;
+		}
 		if (request->GetHeader("Authorization") == std::string()) {
 			response->SetStatusCode(401);
 			response->SetHeader("WWW-Authenticate", "BASIC realm=\"hdhdn\"");
@@ -38,12 +48,12 @@ namespace fs {
 
 			auto auth = request->GetHeader("Authorization");
 			std::string srvpass("Basic ");
-			auto const pass = ":" + rcon_password;
+			auto const UserPass = fx_username + ":" + fx_password;
 			auto buf_sz = size_t();
 			auto const buf_ptr
 				= base64_encode
-				(reinterpret_cast<const unsigned char*>(pass.c_str())
-					, pass.size()
+				(reinterpret_cast<const unsigned char*>(UserPass.c_str())
+					, UserPass.size()
 					, &buf_sz
 				);
 			srvpass.append(buf_ptr, buf_ptr + buf_sz);
@@ -61,8 +71,28 @@ namespace fs {
 			}
 		}
 	}
+	std::string GetUserName(fx::ServerInstanceBase *instance)
+	{
+		auto varman = instance->GetComponent<console::Context>()->GetVariableManager();
+		{
+			auto u = varman->FindEntryRaw("FX_USERNAME");
+			if (u != nullptr) {
+				return u->GetValue();
+			}
+		}
+		return "";
+	}
+
+	std::string GetPassword(fx::ServerInstanceBase *instance)
+	{
+		auto varman = instance->GetComponent<console::Context>()->GetVariableManager();
+		{
+			auto u = varman->FindEntryRaw("FX_PASSWORD");
+			if (u != nullptr) {
+				return u->GetValue();
+			}
+		}
+		return "";
+	}
 }
-std::string GetUserName()
-{
-	return "";
-}
+
