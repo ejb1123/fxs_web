@@ -64,4 +64,5 @@ namespace fs {
 }
 std::string GetUserName()
 {
+	return "";
 }
