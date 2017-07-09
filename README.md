@@ -1,5 +1,5 @@
 # fs_fxs-web
-s_fxs-web is a  FSServer component that adds custom http endpoints.
+s_fxs-web is a  **FXServer** component that adds custom http endpoints.
 
 # Installation
 1. Copy `fs-web.dll` to your **fxserver** directory 
