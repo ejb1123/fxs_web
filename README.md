@@ -1,7 +1,11 @@
-#INSTALL
-copy fs-web.dll to the fxserver.exe directory and then add `fs:web` to the `components.json`
+# fs_fxs-web
+s_fxs-web is a  FSServer component that adds custom http endpoints.
 
-#HACKING
+# Installation
+1. Copy `fs-web.dll` to your **fxserver** directory 
+2. Add `fs:web` to the `components.json` file
+
+# Developing
 
 *After setting up dev enviroment run
 
