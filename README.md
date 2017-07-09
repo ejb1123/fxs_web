@@ -1,5 +1,5 @@
 # fs_fxs-web
-s_fxs-web is a  **FXServer** component that adds custom http endpoints.
+**fs_fxs-web** is a  **FXServer** component that adds custom http endpoints.
 
 # Installation
 1. Copy `fs-web.dll` to your **fxserver** directory 
@@ -7,13 +7,13 @@ s_fxs-web is a  **FXServer** component that adds custom http endpoints.
 
 # Developing
 
-*After setting up dev enviroment run
+* After setting up dev enviroment run
 
 ```
 mklink /J ./components/fs-web path_to_fivem/fivem/code/components/fs-web
 ```
 
-to link the folder to the FiveM code.
+to link the folder to the **FiveM** code.
 
 * Add `fs-web` to `path_to_fivem/fivem/code/components/config.lua`
 * Run premake
