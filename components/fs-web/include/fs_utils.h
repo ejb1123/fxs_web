@@ -1,7 +1,8 @@
-﻿#include <ResourceManager.h>
+﻿#pragma once
+#include <ResourceManager.h>
 #include <console\Console.VariableHelpers.h>
+#include <base64.h>
 #include "StdInc.h"
-#pragma once
 namespace fs {
 	static char * StateToString(fwRefContainer<fx::Resource> resource) {
 		char * state;
@@ -44,8 +45,6 @@ namespace fs {
 		}
 		else if (request->GetHeader("Authorization").length() > 0)
 		{
-
-
 			auto auth = request->GetHeader("Authorization");
 			std::string srvpass("Basic ");
 			auto const UserPass = fx_username + ":" + fx_password;

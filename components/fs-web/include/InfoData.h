@@ -1,14 +1,9 @@
+#pragma once
 #include <json.hpp>
 #include "StdInc.h"
 #include <ServerInstanceBase.h>
-#include <HttpServerManager.h>
 #include <GameServer.h>
 #include <ResourceManager.h>
-#include <VFSManager.h>
-
-#include <botan\bcrypt.h>
-#include <base64.h>
-#include <json.hpp>
 #include <fs_utils.h>
 #include <console\Console.VariableHelpers.h>
 using json = nlohmann::json;
