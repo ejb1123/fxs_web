@@ -64,7 +64,7 @@ function DownloadBoost () {
     $output = "$env:TEMP\boost_1_63_0.zip.zip"
     if (!(Test-Path -Path "$env:TEMP\boost_1_63_0.zip.zip")) {
         $start_time = Get-Date 
-        Invoke-WebRequest -Uri $url -OutFile $output
+        Invoke-WebRequest -Uri $url -OutFile $output -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
         Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
     }
 }
@@ -99,3 +99,6 @@ else {
     DownloadBoost
     InstallBoost
 }
+
+git clone https://github.com/citizenfx/fivem.git
+Push-Location fivem

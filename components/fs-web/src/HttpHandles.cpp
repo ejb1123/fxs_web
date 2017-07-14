@@ -31,6 +31,7 @@ SOFTWARE.
 #include "PlayerInfo.h"
 #include "ServerData.h"
 #include "HttpServer.h"
+#include <fstream>
 
 
 using json = nlohmann::json;
@@ -57,12 +58,43 @@ static InitFunction initFunction([]()
 							response->SetStatusCode(200);
 							response->End(playerData->jsonData.dump());
 						}
-						if (morepath == "/server.json")
+						else if (morepath == "/server.json")
 						{
 							serverData->update();
 							response->SetStatusCode(200);
 							response->End(serverData->info.dump());
 						}
+						else if (morepath == "/resource")
+						{
+							serverData->update();
+							response->End(serverData->resourceData->info.dump());
+						}
+						else if (morepath == "/log")
+						{
+							std::string line;
+							std::ifstream logFile;
+							logFile.open(MakeRelativeCitPath(L"CitizenFX.log").c_str());
+							std::string log;
+
+							while (logFile.is_open())
+							{
+								while (std::getline(logFile,line))
+								{
+									log += line;
+								}
+								logFile.close();
+							}
+							response->SetHeader("Content-Type", "text/plain");
+							//response->SetHeader("X-Content-Type-Options", "nosniff");
+							response->End(log);
+
+						}
+						else
+						{
+							response->SetStatusCode(404);
+							response->End("");
+						}
+						//if (morepath.substr())
 					}
 				}
 			}

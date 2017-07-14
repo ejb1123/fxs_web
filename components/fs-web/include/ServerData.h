@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright (c) 2017 FiveM-Scripts
@@ -29,25 +29,19 @@ SOFTWARE.
 #include "ResourceManager.h"
 #include "fs_utils.h"
 using json = nlohmann::json;
-struct ServerData
+
+struct ResourceData
 {
 	json info;
-	fx::ServerInstanceBase *instace;
-	ServerData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
+	std::shared_ptr<fx::ServerInstanceBase> instace;
+	fwRefContainer<fx::ResourceManager> resman;
+	ResourceData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
 	{
-
+		resman = instace->GetComponent<fx::ResourceManager>();
 	}
 
 	void update()
 	{
-		info["name"] = instace->GetComponent<console::Context>()->GetVariableManager()->FindEntryRaw("sv_hostname")->GetValue();
-		unsigned char clients = 0;
-		instace->GetComponent<fx::ClientRegistry>()->ForAllClients([&clients](auto client)
-		{
-			clients++;
-		});
-		info["totalPlayers"] = clients;
-		auto resman = instace->GetComponent<fx::ResourceManager>();
 		resman->ForAllResources([&](fwRefContainer<fx::Resource> resource)
 		{
 			// we've already listed hardcap, no need to actually return it again
@@ -60,5 +54,31 @@ struct ServerData
 			char* state = fs::StateToString(resource);
 			info["resources"][resource->GetName()]["state"] = (state);
 		});
+	}
+};
+
+
+struct ServerData
+{
+	json info;
+	std::shared_ptr<fx::ServerInstanceBase> instace;
+	//fx::ServerInstanceBase *instace;
+	std::shared_ptr<ResourceData> resourceData;
+	ServerData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
+	{
+		resourceData = std::make_shared<ResourceData>(instace);
+	}
+
+	void update()
+	{
+		info["name"] = instace->GetComponent<console::Context>()->GetVariableManager()->FindEntryRaw("sv_hostname")->GetValue();
+		unsigned char clients = 0;
+		instace->GetComponent<fx::ClientRegistry>()->ForAllClients([&clients](auto client)
+		{
+			clients++;
+		});
+		info["totalPlayers"] = clients;
+		resourceData->update();
+		info["resources"] = resourceData->info["resources"];
 	}
 };
