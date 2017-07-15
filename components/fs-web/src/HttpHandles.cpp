@@ -41,6 +41,7 @@ static InitFunction initFunction([]()
 {
 	fx::ServerInstanceBase::OnServerCreate.Connect([](fx::ServerInstanceBase *instance)
 	{
+		//static auto console = std::make_shared<console::Context>();
 		static auto infoData = std::make_shared<InfoData>(instance);
 		static auto playerData = std::make_shared<PlayerData>(instance);
 		static auto serverData = std::make_shared<ServerData>(instance);
@@ -85,9 +86,14 @@ static InitFunction initFunction([]()
 								logFile.close();
 							}
 							response->SetHeader("Content-Type", "text/plain");
-							//response->SetHeader("X-Content-Type-Options", "nosniff");
 							response->End(log);
-
+						}
+						else if(morepath=="/log/clear")
+						{
+							std::fstream logFile;
+							logFile.open(MakeRelativeCitPath(L"CitizenFX.log").c_str(),std::ios::out | std::ios::trunc);
+							logFile.close();
+							response->End("");
 						}
 						else
 						{
