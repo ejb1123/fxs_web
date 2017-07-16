@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright (c) 2017 FiveM-Scripts
@@ -25,6 +25,7 @@ SOFTWARE.
 #include "StdInc.h"
 #include "ServerInstanceBase.h"
 #include "ClientRegistry.h"
+#include "coords.h"
 using json = nlohmann::json;
 
 struct PlayerData
@@ -45,14 +46,15 @@ struct PlayerData
 			auto jsonclient = json::object();
 			auto name = client->GetName();
 			jsonclient["name"] = name;
-			auto coords = json::object();
-			coords["x"] = 0;
-			coords["y"] = 0;
-			coords["z"] = 0;
-			jsonclient["coords"] = coords;
+			auto lcoords = json::object();
+			lcoords["x"] = std::any_cast<coords>(client->GetData("coords")).x;
+			lcoords["y"] = std::any_cast<coords>(client->GetData("coords")).y;
+			lcoords["z"] = std::any_cast<coords>(client->GetData("coords")).z;
+			jsonclient["coords"] = lcoords;
 			auto identifiers = json::object();
 			identifiers = client->GetIdentifiers();
 			jsonclient["identifiers"] = identifiers;
+			jsonclient["netid"] = client->GetNetId();
 			jsonData["players"].push_back(jsonclient);
 		});
 	}

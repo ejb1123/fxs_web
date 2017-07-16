@@ -41,10 +41,12 @@ static InitFunction initFunction([]()
 {
 	fx::ServerInstanceBase::OnServerCreate.Connect([](fx::ServerInstanceBase *instance)
 	{
-		//static auto console = std::make_shared<console::Context>();
+		static auto console = instance->GetComponent<console::Context>();
 		static auto infoData = std::make_shared<InfoData>(instance);
 		static auto playerData = std::make_shared<PlayerData>(instance);
 		static auto serverData = std::make_shared<ServerData>(instance);
+		static auto resourceData = std::make_shared<ResourceData>(instance);
+		trace("creating fs server", "fs-web");
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
 			if (fs::isAuthed(request, response, instance)) {
@@ -67,8 +69,8 @@ static InitFunction initFunction([]()
 						}
 						else if (morepath == "/resource")
 						{
-							serverData->update();
-							response->End(serverData->resourceData->info.dump());
+							resourceData->update();
+							response->End(resourceData->info.dump());
 						}
 						else if (morepath == "/log")
 						{
@@ -88,7 +90,7 @@ static InitFunction initFunction([]()
 							response->SetHeader("Content-Type", "text/plain");
 							response->End(log);
 						}
-						else if(morepath=="/log/clear")
+						else if(morepath=="/log/actions/clear")
 						{
 							std::fstream logFile;
 							logFile.open(MakeRelativeCitPath(L"CitizenFX.log").c_str(),std::ios::out | std::ios::trunc);

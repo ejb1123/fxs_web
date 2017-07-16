@@ -66,7 +66,7 @@ namespace fs {
 			response->End();
 			return false;
 		}
-		else if (request->GetHeader("Authorization").length() > 0)
+		if (request->GetHeader("Authorization").length() > 0)
 		{
 			auto auth = request->GetHeader("Authorization");
 			std::string srvpass("Basic ");
@@ -85,13 +85,13 @@ namespace fs {
 			{
 				return true;
 			}
-			else
-			{
-				response->SetStatusCode(403);
-				response->End("");
-				return false;
-			}
+			response->SetStatusCode(403);
+			response->End("");
+			return false;
 		}
+		response->SetStatusCode(500);
+		response->End("An Error has occured in Auth");
+		return false;
 	}
 	std::string GetUserName(fx::ServerInstanceBase *instance)
 	{

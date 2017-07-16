@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright (c) 2017 FiveM-Scripts
@@ -21,22 +21,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #include "StdInc.h"
 #include "ScriptEngine.h"
 #include "ServerInstanceBase.h"
-#include "ServerEventComponent.h"
 #include "ResourceCallbackComponent.h"
+#include "ClientRegistry.h"
+#include "coords.h"
 static InitFunction initFunction([]()
 {
+
 	fx::ScriptEngine::RegisterNativeHandler("GET_COORDS", [](fx::ScriptContext context)
 	{
 		trace("called");
 	});
 
-	fx::ServerInstanceBase::OnServerCreate.Connect([](fx::ServerInstanceBase *instance)
+	fx::ServerInstanceBase::OnServerCreate.Connect([&](fx::ServerInstanceBase *instance)
 	{
+		static auto clientRegistry = instance->GetComponent<fx::ClientRegistry>();
+		fx::ScriptEngine::RegisterNativeHandler("set_loc",[&](fx::ScriptContext& context)
+		{			
+			auto x = context.CheckArgument<float>(0);
+			auto y = context.CheckArgument<float>(1);
+			auto z = context.CheckArgument<float>(2);
+			auto playerNetID = context.CheckArgument<int>(3);
+			clientRegistry->GetClientByNetID(playerNetID)->SetData("coords", std::make_any<coords>(coords(x,y,z)));
+			trace(std::to_string(x).c_str());
+			//trace(y);
+			//instance->GetComponent<fx::ServerInstanceBase>();
+		});
 		//instance->GetComponent<fx::ServerEventComponent>()->TriggerClientEvent("fx-data:coords:request", "-1");
-	});
-
+	},1500);
 });
 

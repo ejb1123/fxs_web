@@ -35,7 +35,8 @@ struct ResourceData
 	json info;
 	std::shared_ptr<fx::ServerInstanceBase> instace;
 	fwRefContainer<fx::ResourceManager> resman;
-	ResourceData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
+
+	explicit ResourceData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
 	{
 		resman = instace->GetComponent<fx::ResourceManager>();
 	}
@@ -62,11 +63,11 @@ struct ServerData
 {
 	json info;
 	std::shared_ptr<fx::ServerInstanceBase> instace;
-	//fx::ServerInstanceBase *instace;
 	std::shared_ptr<ResourceData> resourceData;
-	ServerData(fx::ServerInstanceBase *instace) : info({}), instace(instace)
+
+	explicit ServerData(fx::ServerInstanceBase *instace) : info({}), instace(instace),resourceData(std::make_shared<ResourceData>(instace))
 	{
-		resourceData = std::make_shared<ResourceData>(instace);
+		//resourceData = std::make_shared<ResourceData>(instace);
 	}
 
 	void update()
