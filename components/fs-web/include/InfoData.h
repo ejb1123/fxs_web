@@ -27,7 +27,6 @@ SOFTWARE.
 #include <GameServer.h>
 #include <ResourceManager.h>
 #include <fs_utils.h>
-#include <console\Console.VariableHelpers.h>
 using json = nlohmann::json;
 
 struct InfoData
