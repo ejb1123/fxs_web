@@ -23,21 +23,30 @@ SOFTWARE.
 */
 
 #include "StdInc.h"
+#include "Utils.h"
 #include "ScriptEngine.h"
 #include "ServerInstanceBase.h"
 #include "ResourceCallbackComponent.h"
 #include "ClientRegistry.h"
+#include "ResourceEventComponent.h"
 #include "coords.h"
+#include <ResourceManager.h>
 static InitFunction initFunction([]()
 {
 
 	fx::ScriptEngine::RegisterNativeHandler("GET_COORDS", [](fx::ScriptContext context)
 	{
-		trace("called");
 	});
 
 	fx::ServerInstanceBase::OnServerCreate.Connect([&](fx::ServerInstanceBase *instance)
 	{
+		static auto l = fx::ResourceManager::GetCurrent();
+
+		static auto j = l->GetComponent<fx::ResourceEventManagerComponent>();
+		j->OnTriggerEvent.Connect([&](const std::string& eventName, const std::string& eventPayload, const std::string& eventSource, bool* eventCanceled)
+		{			
+			trace("%s\n%s\n",eventName,eventPayload);
+		});
 		static auto clientRegistry = instance->GetComponent<fx::ClientRegistry>();
 		fx::ScriptEngine::RegisterNativeHandler("set_loc",[&](fx::ScriptContext& context)
 		{			

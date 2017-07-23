@@ -46,24 +46,31 @@ struct PlayerData
 			auto jsonclient = json::object();
 			auto name = client->GetName();
 			jsonclient["name"] = name;
-			auto lcoords = json::object();
-			lcoords["x"] = std::any_cast<coords>(client->GetData("coords")).x;
-			lcoords["y"] = std::any_cast<coords>(client->GetData("coords")).y;
-			lcoords["z"] = std::any_cast<coords>(client->GetData("coords")).z;
-			jsonclient["coords"] = lcoords;
-			auto identifiers = json::object();
-			identifiers = client->GetIdentifiers();
-			jsonclient["identifiers"] = identifiers;
+
+			if (client->GetData("coords").has_value()) {
+				auto jsoncoords = json::object();
+				jsoncoords["x"]= std::any_cast<coords>(client->GetData("coords")).x;
+				jsoncoords["y"] = std::any_cast<coords>(client->GetData("coords")).y;
+				jsoncoords["z"] = std::any_cast<coords>(client->GetData("coords")).z;
+				jsonclient["coords"] = jsoncoords;
+			}
+			jsonclient["lastseen"] = client->GetLastSeen().count();
+			jsonclient["identifiers"] = client->GetIdentifiers();
 			jsonclient["netid"] = client->GetNetId();
+			jsonclient["adress"] = client->GetAddress().ToString();
+			jsonclient["guid"] = client->GetGuid();
+			jsonclient["netbase"] = client->GetNetBase();
+			//jsonclient["peer"] = client->GetPeer();
+			jsonclient["tcpendpoint"] = client->GetTcpEndPoint();
 			jsonData["players"].push_back(jsonclient);
 		});
 	}
 private:
 	fwRefContainer<fx::ClientRegistry> client_registry;
+
 	auto GetPlayers()
 	{
 		json playerArray = {};
-
 		client_registry->ForAllClients([&](const std::shared_ptr<fx::Client> client)
 		{
 			playerArray.push_back(json({ "name",client->GetName() }));
