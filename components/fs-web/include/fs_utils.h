@@ -23,8 +23,8 @@ SOFTWARE.
 */
 #pragma once
 #include <ResourceManager.h>
-#include <console\Console.VariableHelpers.h>
 #include <base64.h>
+#include "console/Console.VariableHelpers.h"
 #include "StdInc.h"
 namespace fs {
 	static char * StateToString(fwRefContainer<fx::Resource> resource) {
