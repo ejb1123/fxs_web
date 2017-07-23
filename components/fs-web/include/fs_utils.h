@@ -23,7 +23,6 @@ SOFTWARE.
 */
 #pragma once
 #include <ResourceManager.h>
-#include <console\Console.VariableHelpers.h>
 #include <base64.h>
 #include "StdInc.h"
 namespace fs {
