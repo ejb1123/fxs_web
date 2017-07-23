@@ -1,0 +1,3 @@
+[submodule "Build-Scripts"]
+	path = Build-Scripts
+	url = ../../FiveM-Scripts/Build-Scripts.git
