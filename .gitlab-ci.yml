@@ -67,6 +67,6 @@ build:
   script:
     - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir="%CI_PROJECT_DIR%\work" -SaveDir="%CI_PROJECT_DIR%\save"
   artifacts:
-   paths:
+    paths:
     - work/
     untracked: true
