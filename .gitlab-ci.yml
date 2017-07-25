@@ -5,6 +5,7 @@ variables:
   BOOST_ROOT: "%CI_PROJECT_DIR%\\libs\\boost_1_64_0"
   GIT_SUBMODULE_STRATEGY: "normal"
   GIT_STRATEGY: clone
+  IS_FXSERVER: 1
 
 stages:
   - prep
