@@ -49,7 +49,7 @@ build:
     - cd fivem
     - git submodule update --init --recursive
   script:
-    - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" "%CI_PROJECT_DIR%\work" "%CI_PROJECT_DIR%\save"
+    - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" "%CI_PROJECT_DIR%\fivem" "%CI_PROJECT_DIR%\save"
   artifacts:
     paths:
     - work/
