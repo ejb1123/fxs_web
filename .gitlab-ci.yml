@@ -42,7 +42,6 @@ build:
   cache:
     paths:
       - libs\boost_1_64_0
-    untracked: true
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
@@ -53,5 +52,4 @@ build:
     - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" "%CI_PROJECT_DIR%\fivem" "%CI_PROJECT_DIR%\save"
   artifacts:
     paths:
-    - work/
-    untracked: true
+    - work\
