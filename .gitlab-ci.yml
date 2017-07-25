@@ -5,7 +5,7 @@ variables:
   BOOST_ROOT: "%CI_PROJECT_DIR%\\libs\\boost_1_64_0"
   GIT_SUBMODULE_STRATEGY: "normal"
   GIT_STRATEGY: clone
-  IS_FXSERVER: 1
+  IS_FXSERVER: "1"
 
 stages:
   - prep
@@ -48,7 +48,7 @@ build:
     #- powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
     - powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
     - cd fivem
-    - git submodule update --init --recursive
+    #- git submodule update --init --recursive
   script:
     - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" "%CI_PROJECT_DIR%\fivem" "%CI_PROJECT_DIR%\save"
   artifacts:
