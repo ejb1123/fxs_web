@@ -45,11 +45,11 @@ build:
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
-    - $env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
+    - .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
     - cd fivem
     #- git submodule update --init --recursive
   script:
-    - powershell -File "$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\fivem" -SaveDir "$env:CI_PROJECT_DIR\save"
+    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\fivem" -SaveDir "$env:CI_PROJECT_DIR\save"
   artifacts:
     paths:
     - save\
