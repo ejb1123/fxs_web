@@ -2,7 +2,7 @@
 # Official docker image.
 
 variables:
-  BOOST_ROOT: "%CI_PROJECT_DIR%\\libs\\boost_1_64_0"
+  BOOST_ROOT: "$CI_PROJECT_DIR\\libs\\boost_1_64_0"
   GIT_SUBMODULE_STRATEGY: "normal"
   GIT_STRATEGY: clone
   IS_FXSERVER: "1"
@@ -44,12 +44,12 @@ build:
       - libs\boost_1_64_0
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
-    #- powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
-    - powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 boost
+    #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
+    - $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
     - cd fivem
     #- git submodule update --init --recursive
   script:
-    - powershell -File "%CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\FiveM.ps1" "%CI_PROJECT_DIR%\fivem" "%CI_PROJECT_DIR%\save"
+    - powershell -File "$CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$CI_PROJECT_DIR\fivem" -SaveDir "$CI_PROJECT_DIR\save"
   artifacts:
     paths:
-    - work\
+    - save\
