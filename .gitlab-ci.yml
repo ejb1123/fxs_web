@@ -46,7 +46,7 @@ build:
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
-    - powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
+    - powershell -File %CI_PROJECT_DIR%\Build-Scripts\scripts\fxs-components\Installer.ps1 boost
     - cd fivem
     #- git submodule update --init --recursive
   script:
