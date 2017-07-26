@@ -4,7 +4,6 @@
 variables:
   BOOST_ROOT: "$CI_PROJECT_DIR\\libs\\boost_1_64_0"
   GIT_SUBMODULE_STRATEGY: "normal"
-  GIT_STRATEGY: clone
   IS_FXSERVER: "1"
 
 stages:
@@ -20,19 +19,15 @@ prep-linux:
     untracked: true
   image: alpine:latest
   stage: prep
-  before_script:
-    - apk --no-cache update
-    - apk --no-cache upgrade
-    - apk add git
-    - git clone https://github.com/citizenfx/fivem.git
-    
   script:
+    - git clone https://github.com/citizenfx/fivem.git
     - cd fivem
     - git submodule update --init --recursive
     - ln -sf $CI_PROJECT_DIR/components/fs-web $CI_PROJECT_DIR/fivem/code/components/fs-web
     - echo "component 'fs-web'" >> $CI_PROJECT_DIR/fivem/code/components/config.lua
-    - chmod +x $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/fivem-linux.sh
-    - $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/fivem-linux.sh
+    - cd ..
+    - chmod +x $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/proot-build.sh
+    - $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/proot-build.sh
   tags:
   - docker
 build:
@@ -42,6 +37,7 @@ build:
   cache:
     paths:
       - libs\boost_1_64_0
+      - save\
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
@@ -52,4 +48,4 @@ build:
     - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\fivem" -SaveDir "$env:CI_PROJECT_DIR\save"
   artifacts:
     paths:
-    - save\
+    - save\bin
