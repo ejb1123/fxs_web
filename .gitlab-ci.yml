@@ -22,14 +22,7 @@ prep-linux:
   variables:
       GIT_STRATEGY: clone
   script:
-    - git clone https://github.com/citizenfx/fivem.git
-    - cd fivem
-    - git submodule update --init --recursive
-    - ln -sf $CI_PROJECT_DIR/components/fs-web $CI_PROJECT_DIR/fivem/code/components/fs-web
-    - echo "component 'fs-web'" >> $CI_PROJECT_DIR/fivem/code/components/config.lua
-    - cd ..
-    - chmod +x $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/proot-build.sh
-    - $CI_PROJECT_DIR/Build-Scripts/scripts/fxs-components/proot-build.sh
+    docker ps
   tags:
   - docker
 build:
