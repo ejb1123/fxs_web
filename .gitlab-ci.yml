@@ -32,7 +32,7 @@ build:
   cache:
     paths:
       - libs\boost_1_64_0
-      - save\y
+      - save
   before_script:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
