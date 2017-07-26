@@ -37,6 +37,8 @@ build:
     - git clone https://github.com/citizenfx/fivem.git
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
     - .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
+    - mklink /J $env:CI_PROJECT_DIR\fs-web $env:CI_PROJECT_DIR\fivem\code\components\fs-web
+    - Add-Content -Value "component 'fs-web'" -Path $env:CI_PROJECT_DIR\fivem\code\components\config.lua -Encoding UTF8
     - cd fivem
     #- git submodule update --init --recursive
   script:
