@@ -38,8 +38,8 @@ build:
 
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
     - .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
-    - if((test-path .\fivem)  != $true) {
-    git clone 'https://github.com/citizenfx/fivem.git' $WorkDir;
+    - if($(test-path .\fivem)  != $true) {
+      cmd /c "git clone `"https://github.com/citizenfx/fivem.git`" $WorkDir";
       cd fivem;
       } 
       else {
