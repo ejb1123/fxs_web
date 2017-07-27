@@ -32,17 +32,27 @@ build:
   cache:
     paths:
       - libs\boost_1_64_0
-      - save
+      - save\
+      - fivem\
   before_script:
-    - git clone https://github.com/citizenfx/fivem.git
+
     #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
     - .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
+    - if(test-location .\fivem != $true) {
+      git clone "https://github.com/citizenfx/fivem.git" $WorkDir
+      cd fivem
+      }else{
+      cd fivem
+      git checkout .\*
+      git submodule deinit --all
+      git pull
+      }
     - New-Item -ItemType Junction -Path $env:CI_PROJECT_DIR\fivem\code\components -Name fs-web -Value $env:CI_PROJECT_DIR\components\fs-web
     - Add-Content -Value "component 'fs-web'" -Path $env:CI_PROJECT_DIR\fivem\code\components\config.lua -Encoding UTF8
-    - cd fivem
     #- git submodule update --init --recursive
   script:
     - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\fivem" -SaveDir "$env:CI_PROJECT_DIR\save"
   artifacts:
     paths:
     - save\bin
+    - fivem\out
