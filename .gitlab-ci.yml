@@ -2,7 +2,6 @@
 # Official docker image.
 
 variables:
-  BOOST_ROOT: "$CI_PROJECT_DIR\\libs\\boost_1_64_0"
   GIT_SUBMODULE_STRATEGY: "normal"
   IS_FXSERVER: "1"
 
@@ -13,6 +12,8 @@ stages:
   - deploy
 
 prep-linux:
+  variables:
+    BOOST_ROOT: "$CI_PROJECT_DIR\\libs\\boost_1_64_0"
   artifacts:
     paths:
     - fivem/code/bin
