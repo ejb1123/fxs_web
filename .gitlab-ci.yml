@@ -39,7 +39,7 @@ build:
     #- .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
     - cmd /c "git clone `"https://github.com/citizenfx/fivem.git`" work"
     - cd work
-    - New-Item -ItemType Junction -Path $env:CI_PROJECT_DIR\fivem\code\components -Name fs-web -Value $env:CI_PROJECT_DIR\components\fs-web
+    - New-Item -ItemType Junction -Path $env:CI_PROJECT_DIR\work\code\components -Name fs-web -Value $env:CI_PROJECT_DIR\components\fs-web
     - Add-Content -Value "component 'fs-web'" -Path $env:CI_PROJECT_DIR\fivem\code\components\config.lua -Encoding UTF8
     #- git submodule update --init --recursive
   script:
