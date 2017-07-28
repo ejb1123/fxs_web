@@ -35,7 +35,7 @@ build:
       - save\*
   before_script:
     - cmd /c "git clone `"https://github.com/citizenfx/fivem.git`" work"
-    ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\componentLinker.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SrcDir "$env:CI_PROJECT_DIR\."
+    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\componentLinker.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SrcDir "$env:CI_PROJECT_DIR\."
     - cd work
   script:
     - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SaveDir "$env:CI_PROJECT_DIR\save"
