@@ -44,12 +44,12 @@ build:
     paths:
     - save\bin
     - work\out
-  deploy:
-    tags:
-      - win32
-    when: manual
-    stage: deploy
-    script:
-      - stop-service fxserver-gitlab
-      - 7z x -y -o $env:DEPLOY_PATH $env:CI_PROJECT_DIR\work\out\server.zip
-      - start-service fxserver-gitlab
+deploy:
+  tags:
+    - win32
+  when: manual
+  stage: deploy
+  script:
+    - stop-service fxserver-gitlab
+    - 7z x -y -o $env:DEPLOY_PATH $env:CI_PROJECT_DIR\work\out\server.zip
+    - start-service fxserver-gitlab
