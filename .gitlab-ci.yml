@@ -34,14 +34,9 @@ build:
     paths:
       - save\*
   before_script:
-
-    #- powershell -File $CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode premake
-    #- .$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\Installer.ps1 -mode boost
     - cmd /c "git clone `"https://github.com/citizenfx/fivem.git`" work"
+    ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\componentLinker.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SrcDir "$env:CI_PROJECT_DIR\."
     - cd work
-    - New-Item -ItemType Junction -Path $env:CI_PROJECT_DIR\work\code\components -Name fs-web -Value $env:CI_PROJECT_DIR\components\fs-web
-    - Add-Content -Value "component 'fs-web'" -Path $env:CI_PROJECT_DIR\fivem\code\components\config.lua -Encoding UTF8
-    #- git submodule update --init --recursive
   script:
     - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SaveDir "$env:CI_PROJECT_DIR\save"
 
