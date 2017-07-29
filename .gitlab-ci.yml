@@ -51,5 +51,5 @@ deploy:
   stage: deploy
   script:
     - stop-service fxserver-gitlab
-    - 7z x -y -o$env:DEPLOY_PATH $env:CI_PROJECT_DIR\work\out\server.zip
+    - 7z x -y -o"$env:DEPLOY_PATH" $env:CI_PROJECT_DIR\work\out\server.zip
     - start-service fxserver-gitlab
