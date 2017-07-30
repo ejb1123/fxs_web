@@ -2,14 +2,15 @@
 title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - lua
+  - shell: CURL
   - csharp: C#
-  -
+  - lua: Lua
 
 includes:
   - errors
   - log
   - players
+  - server
 
 
 search: true
@@ -30,7 +31,7 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
     Download **fs_fxs-web** from our repository then copy **fs-web.dll** to your **FXServer** root folder  
     When the dll has been placed in the root folder, open **composer.json** and add **"fs:web"**  this should look this:
 
-```JSON
+```json
 {
   "net:base",
   "net:tcp-server",
