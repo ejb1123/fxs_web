@@ -47,7 +47,7 @@ build:
 docs:
   tags:
     - win32
-  stage: prep
+  stage: build
   script:
     - cd docs\slate
     - bundle install
@@ -56,6 +56,14 @@ docs:
   artifacts:
     paths:
     - docs\slate\build
+deploy-docs:
+  tags:
+    - win32
+  stage: deploy
+  script:
+    - echo "test"
+  dependencies:
+    - docs
 deploy:
   tags:
     - win32
