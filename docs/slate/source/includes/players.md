@@ -3,13 +3,20 @@
 
 ## Get All Players
 
-To retrieve a list of all the current players on the server send a **GET** request to `/fsdata/players/`
+To retrieve a list of all the current players on the server send a **GET** request to `/fsdata/players/`    
+The response will be a JSON object contain the following attributes:    
 
-Parameter | Description
+Name | Description
 ----------|-----------
-coords  | This will return the screen coordniates .
+adress  | This is the players IP adress .
+coords  | This will return the players position.
 identifiers  | This will return the ip and steam id.
-name  | This will return the gamertag.
+lastseen  | This will return the time that we have seen the player on the server in milliseconds
+name  | This will return the players gamertag.
+netbase |
+netid | this will return the network id for the player
+tcpendpoint |
+
 
 ```shell
 curl --request GET \
