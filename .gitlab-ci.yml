@@ -7,10 +7,10 @@ variables:
 
 stages:
   - prep
-  - build
-  - test
-  - doc-deploy
-  - deploy
+  - build-docs
+  - deploy-docs
+  - build-server
+  - deploy-server
 
 prep-linux:
   variables:
@@ -27,8 +27,8 @@ prep-linux:
     docker ps
   tags:
   - docker
-build:
-  stage: build
+build server:
+  stage: build-server
   tags:
     - win32
   cache:
@@ -45,10 +45,10 @@ build:
     paths:
     - save\bin
     - work\out
-docs:
+build docs :
   tags:
     - win32
-  stage: build
+  stage: build-docs
   script:
     - cd docs\slate
     - bundle install
@@ -56,20 +56,20 @@ docs:
   artifacts:
     paths:
     - docs\slate\build
-deploy-docs:
+deploy docs:
   tags:
     - win32
-  stage: doc-deploy
+  stage: deploy-docs
   script:
     - cp -recurse -force build\*  C:\www\docs\fxs_web
   dependencies:
     - docs
 
-deploy:
+deploy server:
   tags:
     - win32
   when: manual
-  stage: deploy
+  stage: deploy-server
   script:
     - stop-service fxserver-gitlab
     - 7z x -y -o"$env:DEPLOY_PATH" $env:CI_PROJECT_DIR\work\out\server.zip
