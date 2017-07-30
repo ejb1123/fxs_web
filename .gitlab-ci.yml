@@ -52,7 +52,7 @@ docs:
     - cd docs\slate
     - bundle install
     - bundle exec middleman build
-    - cp -recursive -force docs\slate\build\*  C:\www\docs\fxs_web
+    - cp -recurse -force docs\slate\build\*  C:\www\docs\fxs_web
   artifacts:
     paths:
     - docs\slate\build
