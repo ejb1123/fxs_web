@@ -31,6 +31,7 @@ build server:
   stage: build-server
   tags:
     - win32
+  when: manual
   cache:
     paths:
       - save\*
