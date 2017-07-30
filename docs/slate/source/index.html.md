@@ -18,18 +18,19 @@ search: true
 ---
 
 # Introduction
-**fs_fxs-web** is a **FXServer** component that adds custom endpoints to the existing HTTP server.
+**fs_fxs-web** is a **FXServer** component that adds custom endpoints to the existing HTTP server.    
+
 
 # Is something wrong?
 
-If our documentation is missing something, please feel to contribute!
-You can click on the Suggest Edits link on the top right side of any documentation page.
+If you discover a bug or security vulnerability, please contact us on our [Discord](https://discord.gg/eNJraMf).
+
 
 # Installation
 
 ## 1. Download FXS-WEB
-    Download FXS-WEB from our repository then copy **fs-web.dll** to your **FXServer** root folder  
-    Then open **composer.json** and add **"fs:web"**  this should look like on the right
+    Download **fs_fxs-web** from our repository then copy **fs-web.dll** to your **FXServer** root folder  
+    When the dll has been placed in the root folder, open **composer.json** and add **"fs:web"**  this should look this:
 
 ```JSON
 {
@@ -48,14 +49,14 @@ You can click on the Suggest Edits link on the top right side of any documentati
   "vfs:core",
   "vfs:impl:server",
   "scripting:server",
-  "fs:data",
   "svadhesive",
-  "citizen:scripting:mono"
+  "citizen:scripting:mono",
+  "fs:data"
 }
 ```
-## 2. Configure the authentication
+## 2. Setup authentication
 
-We need to configure the username and password to use FSX-WEB.
+We need to configure the username and password to use **fs_fxs-web**.
 Go to your **server.cfg** and add the following lines
 
 |Parameter|Description|
@@ -99,5 +100,5 @@ set FX_PASSWORD temp16
 
 # Authentication
 
-fxs_web uses HTTP Basic Auth
+You authenticate to the **fs_fxs-web** component by using **Basic Auth**.
 
