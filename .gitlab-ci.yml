@@ -60,10 +60,9 @@ deploy-docs:
     - win32
   stage: deploy
   script:
-    - echo "test"
+    - cp -recurse -force build\*  C:\www\docs\fxs_web
   dependencies:
     - docs
-    - cp -recurse -force build\*  C:\www\docs\fxs_web
 
 deploy:
   tags:
