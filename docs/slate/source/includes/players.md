@@ -1,3 +1,6 @@
+# Players
+
+
 ## Get All Players
 
 To retrieve a list of all the current players on the server send a **GET** request to `/fsdata/players/`
