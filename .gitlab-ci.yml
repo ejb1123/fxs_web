@@ -31,6 +31,7 @@ build server:
   stage: build-server
   tags:
     - win32
+  when: manual
   cache:
     paths:
       - save\*
@@ -52,19 +53,41 @@ build docs :
   script:
     - cd docs\slate
     - bundle install
-    - bundle exec middleman build
+    - bundle exec middleman build --clean
   artifacts:
     paths:
     - docs\slate\build
-deploy docs:
+deploy_review:
+  stage: deploy-docs
+  tags:
+    - win32
+  script:
+    - New-Item -ItemType Directory -Force -Path "C:\www\docs\staging\fxs_web\$env:CI_COMMIT_REF_NAME"
+    - cp -recurse -force docs\slate\build\*  "C:\www\docs\staging\fxs_web\$env:CI_COMMIT_REF_NAME"
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url:  https://win01.fivem-scripts.org/docs/staging/fxs_web/$env:CI_COMMIT_REF_NAME
+  only:
+    - branches
+  except:
+    - master
+  dependencies:
+    - build docs
+deploy production docs:
   tags:
     - win32
   stage: deploy-docs
   script:
-    - cp -recurse -force docs\slate\build\*  C:\www\docs\fxs_web
+    - rm -force -recurse  C:\www\docs\prod\fxs_web\*
+    - cp -recurse -force docs\slate\build\*  C:\www\docs\prod\fxs_web
   dependencies:
     - build docs
-
+  only:
+    - master
+  when: manual
+  environment:
+    name: Production docs
+    url: https://win01.fivem-scripts.org/docs/prod/fxs_web/
 deploy server:
   tags:
     - win32
