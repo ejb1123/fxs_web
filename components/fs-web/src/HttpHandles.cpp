@@ -55,19 +55,19 @@ static InitFunction initFunction([]()
 					if (request->GetPath().substr(7).length() > 0)
 					{
 						auto morepath = request->GetPath().substr(7);
-						if (morepath == "/players.json")
+						if (morepath == "/players")
 						{
 							playerData->update();
 							response->SetStatusCode(200);
 							response->End(playerData->jsonData.dump());
 						}
-						else if (morepath == "/server.json")
+						else if (morepath == "/server")
 						{
 							serverData->update();
 							response->SetStatusCode(200);
 							response->End(serverData->info.dump());
 						}
-						else if (morepath == "/resource")
+						else if (morepath == "/resources")
 						{
 							resourceData->update();
 							response->End(resourceData->info.dump());
