@@ -52,7 +52,6 @@ docs:
     - cd docs\slate
     - bundle install
     - bundle exec middleman build
-    - cp -recurse -force build\*  C:\www\docs\fxs_web
   artifacts:
     paths:
     - docs\slate\build
@@ -64,6 +63,8 @@ deploy-docs:
     - echo "test"
   dependencies:
     - docs
+    - cp -recurse -force build\*  C:\www\docs\fxs_web
+
 deploy:
   tags:
     - win32
@@ -73,3 +74,5 @@ deploy:
     - stop-service fxserver-gitlab
     - 7z x -y -o"$env:DEPLOY_PATH" $env:CI_PROJECT_DIR\work\out\server.zip
     - start-service fxserver-gitlab
+  dependencies:
+    - build
