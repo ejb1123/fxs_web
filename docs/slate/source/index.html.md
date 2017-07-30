@@ -55,7 +55,7 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
 
 The first thing todo is getting **fs_fxs-web** from our repository.    
 Copy **fs-web.dll** to your **FXServer** root folder.    
-After the dll has been placed in the root folder, open **composer.json** and add **"fs:web"**.
+After the dll has been placed in the root folder, open **components.json** and add **"fs:web"**.
 
 
 ![alt text](fxfolder.png "FXServer directory")
