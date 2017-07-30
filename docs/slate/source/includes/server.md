@@ -1,10 +1,9 @@
 # Server
 
-Send a **GET** request to `/fsdata/server.json`, to retrieve the current state of all your resources
-
 ```shell
 curl --request GET \
      --url https://example.com/fsdata/server.json
+     --basic \
      --user 'admin:demo'
 ```
 
@@ -38,3 +37,12 @@ curl --request GET \
 "sessionmanager":{"state":"started"},
 "spawnmanager":{"state":"started"}},
 "totalPlayers":1}
+```
+To retrieve information from the server send a GET request to `/fsdata/server`.    
+The response will be a JSON object contain the following attributes:
+
+Parameter|Description
+---------|-----------
+name | This will return the server name.
+resources | This will return all the resoources and the state of it.
+totalPlayers | This will return a total of the connected players.
