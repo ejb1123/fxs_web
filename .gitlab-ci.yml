@@ -52,19 +52,23 @@ build docs :
   script:
     - cd docs\slate
     - bundle install
-    - bundle exec middleman build
+    - bundle exec middleman build --clean
   artifacts:
     paths:
     - docs\slate\build
-deploy docs:
+deploy production docs:
   tags:
     - win32
   stage: deploy-docs
   script:
-    - cp -recurse -force docs\slate\build\*  C:\www\docs\fxs_web
+    - rm -force -recurse  C:\www\docs\prod\fxs_web\*
+    - cp -recurse -force docs\slate\build\*  C:\www\docs\prod\fxs_web
   dependencies:
     - build docs
-
+  when: manual
+  environment:
+    name: Production docs
+    url: https://win01.fivem-scripts.org/docs/prod/fxs_web/
 deploy server:
   tags:
     - win32
