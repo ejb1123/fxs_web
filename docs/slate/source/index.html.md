@@ -28,8 +28,7 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
 # Installation
 
 ## 1. Download FXS-WEB
-    Download **fs_fxs-web** from our repository then copy **fs-web.dll** to your **FXServer** root folder  
-    When the dll has been placed in the root folder, open **composer.json** and add **"fs:web"**  this should look this:
+>**composer.json**
 
 ```json
 {
@@ -53,16 +52,15 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
   "fs:data"
 }
 ```
+
+The first thing todo is getting **fs_fxs-web** from our repository.    
+Copy **fs-web.dll** to your **FXServer** root folder.    
+After the dll has been placed in the root folder, open **composer.json** and add **"fs:web"**.
+
+
+![alt text](fxfolder.png "FXServer directory")
+
 ## 2. Setup authentication
-
-We need to configure the username and password to use **fs_fxs-web**.
-Go to your **server.cfg** and add the following lines
-
-|Parameter|Description|
-|---|---|
-|set FX_USERNAME|This is the username to authenticate to the API|
-|set FX_PASSWORD|This is the password to authenticate to the API|
-
 >**Server.cfg**
 
 ```
@@ -97,6 +95,21 @@ set FX_USERNAME www-data
 set FX_PASSWORD temp16
 ```
 
+We need to configure the username and password to use **fs_fxs-web**.    
+Go to your **server.cfg** and add the following lines
+
+|Parameter|Description|
+|---|---|
+|set FX_USERNAME|This is the username to authenticate to the API|
+|set FX_PASSWORD|This is the password to authenticate to the API|
+
 # Authentication
+
+```shell
+curl --request POST \
+  --url https://example.com/fsdata \
+  --basic \
+  --user 'admin:demo'
+```
 
 You authenticate to the **fs_fxs-web** component by using **Basic Auth**.
