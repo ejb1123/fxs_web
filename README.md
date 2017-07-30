@@ -10,10 +10,10 @@
 * After setting up dev enviroment run
 
 ```
-mklink /J ./components/fs-web path_to_fivem/fivem/code/components/fs-web
+git submodule update --init --recursive
+.\Build-Scripts\scripts\fxs-components\componentLinker.ps1 -SrcDir $pwd -WorkDir "Path to the fivem repo"
 ```
 
 to link the folder to the **FiveM** code.
 
-* Add `fs-web` to `path_to_fivem/fivem/code/components/config.lua`
-* Run premake
+* Run premake5 in the five/code folder
