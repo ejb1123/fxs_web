@@ -63,7 +63,7 @@ deploy docs:
   script:
     - cp -recurse -force build\*  C:\www\docs\fxs_web
   dependencies:
-    - docs
+    - build docs
 
 deploy server:
   tags:
@@ -75,4 +75,4 @@ deploy server:
     - 7z x -y -o"$env:DEPLOY_PATH" $env:CI_PROJECT_DIR\work\out\server.zip
     - start-service fxserver-gitlab
   dependencies:
-    - build
+    - build server
