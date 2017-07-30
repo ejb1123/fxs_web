@@ -9,6 +9,7 @@ stages:
   - prep
   - build
   - test
+  - doc-deploy
   - deploy
 
 prep-linux:
@@ -58,7 +59,7 @@ docs:
 deploy-docs:
   tags:
     - win32
-  stage: deploy
+  stage: doc-deploy
   script:
     - cp -recurse -force build\*  C:\www\docs\fxs_web
   dependencies:
