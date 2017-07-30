@@ -61,7 +61,7 @@ deploy docs:
     - win32
   stage: deploy-docs
   script:
-    - cp -recurse -force build\*  C:\www\docs\fxs_web
+    - cp -recurse -force docs\slate\build\*  C:\www\docs\fxs_web
   dependencies:
     - build docs
 
