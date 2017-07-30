@@ -7,6 +7,7 @@
 
 #include "StdInc.h"
 #include "ComponentLoader.h"
+#include <iostream>
 
 class ComponentInstance : public Component
 {
@@ -20,6 +21,7 @@ public:
 
 bool ComponentInstance::Initialize()
 {
+	std::cout << "hh";
 	InitFunctionBase::RunAll();
 
 	return true;

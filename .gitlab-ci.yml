@@ -27,7 +27,7 @@ prep-linux:
   tags:
   - docker
 build:
-  stage: prep
+  stage: build
   tags:
     - win32
   cache:
@@ -44,6 +44,18 @@ build:
     paths:
     - save\bin
     - work\out
+docs:
+  tags:
+    - win32
+  stage: prep
+  script:
+    - cd docs\slate
+    - bundle install
+    - bundle exec middleman build
+    - cp -recursive -force docs\slate\build\*  C:\www\docs\fxs_web
+  artifacts:
+    paths:
+    - docs\slate\build
 deploy:
   tags:
     - win32
