@@ -1,4 +1,6 @@
-# server
+# Server
+
+Send a **GET** request to `/fsdata/server.json`, to retrieve the current state of all your resources
 
 ```shell
 curl --request GET \

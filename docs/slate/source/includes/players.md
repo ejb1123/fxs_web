@@ -13,7 +13,7 @@ name  | This will return the gamertag.
 
 ```shell
 curl --request GET \
-  --url https://example.com/fsdata/players.json \
+  --url https://example.com/fsdata/players \
   --user 'admin:demo'
 ```
 
@@ -21,7 +21,19 @@ curl --request GET \
 >**The above command returns JSON structured like this:**    
 
 ```json
-{"players":[{"coords": {"x":0,"y":0,"z":0},"identifiers":["ip:127.0.0.1"],"name":"Streetcorps"}]}
+{"players":[
+  {
+    "adress":"[::ffff:127.0.0.1]:50169",
+    "coords":{"x":657.722717285156,"y":457.3427734375,"z":144.638854980469},
+    "guid":"148618792060534757",
+    "identifiers":["ip:127.0.0.1"],
+    "lastseen":65137022,
+    "name":"ejb1123",
+    "netbase":62369531,
+    "netid":1,
+    "tcpendpoint":"127.0.0.1"
+  }
+ ]}
 ```
 
 ## Get a Specific Player
