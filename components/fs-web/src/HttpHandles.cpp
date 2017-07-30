@@ -52,11 +52,13 @@ static InitFunction initFunction([]()
 		static auto resourceData = std::make_shared<ResourceData>(instance);
 		trace("creating fs server", "fs-web");
 		static std::regex playersNETID("^\/fsdata\/players\/(\\d{1,3})", std::regex::ECMAScript);
+		static std::regex playersNETIDActions("^\/fsdata\/players\/(\\d{1,3})\/actions\/(kick|ban|message)", std::regex::ECMAScript);
+
 		static std::regex players("^\/fsdata\/players", std::regex::ECMAScript);
 		static std::regex server("^\/fsdata\/server", std::regex::ECMAScript);
 		static std::regex resources("^\/fsdata\/resources", std::regex::ECMAScript);
 		static std::regex logregex("^\/fsdata\/log",std::regex::ECMAScript);
-		static std::regex logAction("^\/fsdata\/log\/actions\/(.*)", std::regex::ECMAScript);
+		static std::regex logAction("^\/fsdata\/log\/actions\/(clear)", std::regex::ECMAScript);
 		static std::smatch l;
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
@@ -69,11 +71,20 @@ static InitFunction initFunction([]()
 						response->End(playerData->jsonData.dump());
 					}
 
-					if (doesmatch(request->GetPath(), l, playersNETID)) {
-						//TODO: add /players/{net_id}
+					if (doesmatch(request->GetPath(), l, playersNETIDActions)) {
+						
+						if (l[2] == "kick") {
+							response->End("player " + l[1].str() + " has been kicked");
+						}
+						if (l[2] == "kick") {
+							response->End("player " + l[1].str() + " has gotten your message");
+						}
+						if (l[2] == "ban") {
+							response->End("player " + l[1].str() + " has been banned");
+						}
 					}
+					//TODO: add /players/{net_id}
 
-					//TODO: add /players/{net_id}/actions
 
 					if (doesmatch(request->GetPath(), l, server)) {
 						serverData->update();
