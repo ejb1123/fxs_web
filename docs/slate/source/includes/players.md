@@ -5,11 +5,13 @@
 
 To retrieve a list of all the current players on the server send a **GET** request to `/fsdata/players/`
 
+>**This will output**    
 
 ```JSON
-```
->The above command returns JSON structured like this:
-```JSON
+{
+  "players":
+  [{"coords":{"x":0,"y":0,"z":0},"identifiers":["ip:127.0.0.1"],"name":"Streetcorps"}]
+}
 ```
 
 ## Get a Specific Player

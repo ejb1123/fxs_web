@@ -4,12 +4,13 @@ title: API Reference
 language_tabs: # must be one of https://git.io/vQNgJ
   - lua
   - csharp: C#
-  - 
+  -
 
 includes:
-  - players
   - errors
- 
+  - log
+  - players
+
 
 search: true
 ---
@@ -98,4 +99,3 @@ set FX_PASSWORD temp16
 # Authentication
 
 You authenticate to the **fs_fxs-web** component by using **Basic Auth**.
-
