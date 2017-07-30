@@ -1,16 +1,6 @@
-# Players
-
-This endpoint retrieves all players.
-
-url: `/fsdata/players`
-
 ## Get All Players
 
-This gets all the players on the server.
-
-**HTTP REQUEST**
-
-`get /fsdata/players/`
+To retrieve a list of all the current players on the server send a **GET** request to `/fsdata/players/`
 
 
 ```JSON
