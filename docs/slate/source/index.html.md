@@ -28,7 +28,7 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
 # Installation
 
 ## 1. Download FXS-WEB
->**composer.json**
+>**components.json**
 
 ```json
 {
