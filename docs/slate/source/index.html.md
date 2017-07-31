@@ -125,7 +125,7 @@ else
   print("--- Error detected ( " .. err .. " ): " .. rText               )
   print("--------------------------------------------------------------")
  end
-end, "POST", "", {["Content-Type"] = "application/json", Authorization = "Basic " .. auth})
+end, "GET", "", {["Content-Type"] = "application/json", Authorization = "Basic " .. auth})
 
 ```
 
