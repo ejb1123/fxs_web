@@ -17,7 +17,8 @@ search: true
 ---
 
 # Introduction
-**fs_fxs-web** is a **FXServer** component that adds custom endpoints to the existing HTTP server.    
+**fs_fxs-web** is a **FXServer** component that extends the default HTTP server with custom data and endpoints.    
+You can use this component for webservices or your **FiveM** resources.
 
 
 # Is something wrong?
@@ -104,12 +105,19 @@ Go to your **server.cfg** and add the following lines
 |set FX_PASSWORD|This is the password to authenticate to the API|
 
 # Authentication
-
 ```shell
-curl --request POST \
-  --url https://example.com/fsdata \
+# The code below is an example on howto use basic auth.
+curl --request GET \
+  --url https://example.com/fsdata/players \
   --basic \
   --user 'admin:demo'
 ```
 
-You authenticate to the **fs_fxs-web** component by using **Basic Auth**.
+```lua
+PerformHttpRequest("https://example.com/fsdata/players", function(err, rText, headers)
+end, "POST", "", {["Content-Type"] = "application/json", Authorization = "Basic " .. auth})
+
+```
+
+You will need to authenticate for each request that you make to **fs_fxs-web**.    
+You can authenticate by using **Basic Auth**.
