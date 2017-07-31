@@ -17,7 +17,7 @@ search: true
 ---
 
 # Introduction
-**fs_fxs-web** is a **FXServer** component that extends the default HTTP server with custom data and endpoints.    
+**FXS-Web** is a **FXServer** component that extends the default HTTP server with custom data and endpoints.    
 You can use this component for webservices or your **FiveM** resources.
 
 
@@ -54,7 +54,7 @@ If you discover a bug or security vulnerability, please contact us on our [Disco
 }
 ```
 
-The first thing todo is getting **fs_fxs-web** from our repository.    
+The first thing todo is getting **FXS-Web** from our repository.    
 Copy **fs-web.dll** to your **FXServer** root folder.    
 After the dll has been placed in the root folder, open **components.json** and add **"fs:web"**.
 
@@ -92,11 +92,11 @@ sv_hostname "FXServer test!"
 set temp_convar "hey world!"
 
 # FXS-WEB
-set FX_USERNAME www-data
-set FX_PASSWORD temp16
+set FX_USERNAME admin
+set FX_PASSWORD demo
 ```
 
-We need to configure the username and password to use **fs_fxs-web**.    
+We need to configure the username and password to use **FXS-Web**.    
 Go to your **server.cfg** and add the following lines
 
 |Parameter|Description|
@@ -114,10 +114,20 @@ curl --request GET \
 ```
 
 ```lua
+local auth = "admin:demo"
 PerformHttpRequest("https://example.com/fsdata/players", function(err, rText, headers)
+if err == 0 then
+  print("-------------------------------------------------------------")
+  print("--- You have been successfully authenticated              ---")
+  print("-------------------------------------------------------------")
+else
+  print("--------------------------------------------------------------")
+  print("--- Error detected ( " .. err .. " ): " .. rText               )
+  print("--------------------------------------------------------------")
+ end
 end, "POST", "", {["Content-Type"] = "application/json", Authorization = "Basic " .. auth})
 
 ```
 
-You will need to authenticate for each request that you make to **fs_fxs-web**.    
+You will need to authenticate for each request that you make to **FXS-Web**.    
 You can authenticate by using **Basic Auth**.
