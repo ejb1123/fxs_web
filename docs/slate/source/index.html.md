@@ -104,6 +104,8 @@ Go to your **server.cfg** and add the following lines
 |set FX_USERNAME|This is the username to authenticate to the API|
 |set FX_PASSWORD|This is the password to authenticate to the API|
 
+<aside class="warning"> If `FX_USERNAME` and `FX_PASSWORD` are not defined no authentication will be enabled.</aside>
+
 # Authentication
 ```shell
 # The code below is an example on howto use basic auth.
