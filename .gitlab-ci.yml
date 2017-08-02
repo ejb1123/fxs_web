@@ -24,15 +24,14 @@ prep-linux:
   variables:
       GIT_STRATEGY: clone
   script:
-    - git clone https://github.com/citizenfx/fivem.git
-    - cd fivem
+    - docker pull alpine:3.6
+    - git clone https://github.com/citizenfx/fivem.git work
+    - cd work
     - git submodule update --init --recursive
     - curl -O -L https://github.com/grammarly/rocker/releases/download/1.3.0/rocker_linux_amd64.tar.gz
     - tar xvf rocker_linux_amd64.tar.gz
     - cd code/
     - ../rocker build
-
-
 
   tags:
   - docker
@@ -46,10 +45,10 @@ build server:
       - save\*
   before_script:
     - cmd /c "git clone `"https://github.com/citizenfx/fivem.git`" work"
-    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\componentLinker.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SrcDir "$env:CI_PROJECT_DIR\."
+    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\win32\componentLinker.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SrcDir "$env:CI_PROJECT_DIR\."
     - cd work
   script:
-    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SaveDir "$env:CI_PROJECT_DIR\save"
+    - ."$env:CI_PROJECT_DIR\Build-Scripts\scripts\fxs-components\win32\FiveM.ps1" -WorkDir "$env:CI_PROJECT_DIR\work" -SaveDir "$env:CI_PROJECT_DIR\save"
 
   artifacts:
     paths:
