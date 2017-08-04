@@ -51,15 +51,15 @@ static InitFunction initFunction([]()
 		static auto serverData = std::make_shared<ServerData>(instance);
 		static auto resourceData = std::make_shared<ResourceData>(instance);
 		trace("creating fs server", "fs-web");
-		static std::regex playersNETID("^\/fsdata\/players\/(\\d{1,3})", std::regex::ECMAScript);
-		static std::regex playersNETIDActions("^\/fsdata\/players\/(\\d{1,3})\/actions\/(kick|ban|message)", std::regex::ECMAScript);
+		static const std::regex playersNETID("^\/fsdata\/players\/(\\d{1,3})", std::regex::ECMAScript);
+		static const std::regex playersNETIDActions("^\/fsdata\/players\/(\\d{1,3})\/actions\/(kick|ban|message)", std::regex::ECMAScript);
 
-		static std::regex players("^\/fsdata\/players", std::regex::ECMAScript);
-		static std::regex server("^\/fsdata\/server", std::regex::ECMAScript);
-		static std::regex resources("^\/fsdata\/resources", std::regex::ECMAScript);
-		static std::regex logregex("^\/fsdata\/log",std::regex::ECMAScript);
-		static std::regex logAction("^\/fsdata\/log\/actions\/(clear)", std::regex::ECMAScript);
-		static std::smatch l;
+		static const std::regex players("^\/fsdata\/players", std::regex::ECMAScript);
+		static const std::regex server("^\/fsdata\/server", std::regex::ECMAScript);
+		static const std::regex resources("^\/fsdata\/resources", std::regex::ECMAScript);
+		static const std::regex logregex("^\/fsdata\/log",std::regex::ECMAScript);
+		static const std::regex logAction("^\/fsdata\/log\/actions\/(clear)", std::regex::ECMAScript);
+		static const std::smatch l;
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
 			if (fs::isAuthed(request, response, instance)) {
@@ -125,7 +125,6 @@ static InitFunction initFunction([]()
 							response->End("");
 						}
 					}
-
 					return;
 				}
 			}
