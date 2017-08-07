@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright (c) 2017 FiveM-Scripts
@@ -46,6 +46,7 @@ struct InfoData
 	void Update()
 	{
 		auto varman = instanceRef->GetComponent<console::Context>()->GetVariableManager();
+		//TODO the below varibles
 		infoJson["vars"] = json::object();
 		varman->ForAllVariables([&](const std::string& name, int flags, const std::shared_ptr<internal::ConsoleVariableEntryBase>& var)
 		{

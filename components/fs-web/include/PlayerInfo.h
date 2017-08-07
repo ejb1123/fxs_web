@@ -32,9 +32,8 @@ struct PlayerData
 {
 	fx::ServerInstanceBase *instance_base_;
 	json jsonData;
-	PlayerData(fx::ServerInstanceBase *instance) :jsonData({})
+	PlayerData(fx::ServerInstanceBase *instance) : jsonData({}), instance_base_(instance)
 	{
-		this->instance_base_ = instance;
 		client_registry = instance->GetComponent<fx::ClientRegistry>();
 		update();
 	}

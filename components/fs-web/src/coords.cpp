@@ -45,7 +45,7 @@ static InitFunction initFunction([]()
 		static auto j = l->GetComponent<fx::ResourceEventManagerComponent>();
 		j->OnTriggerEvent.Connect([&](const std::string& eventName, const std::string& eventPayload, const std::string& eventSource, bool* eventCanceled)
 		{			
-			trace("%s\n%s\n",eventName,eventPayload);
+			//trace("%s\n%s\n",eventName,eventPayload);
 		});
 		static auto clientRegistry = instance->GetComponent<fx::ClientRegistry>();
 		fx::ScriptEngine::RegisterNativeHandler("set_loc",[&](fx::ScriptContext& context)

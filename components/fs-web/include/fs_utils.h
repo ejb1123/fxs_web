@@ -61,6 +61,7 @@ namespace fs {
 		}
 		if (request->GetHeader("Authorization") == std::string()) {
 			response->SetStatusCode(401);
+			//TODO: fix realm
 			response->SetHeader("WWW-Authenticate", "BASIC realm=\"hdhdn\"");
 			response->Write("");
 			response->End();
@@ -97,6 +98,7 @@ namespace fs {
 	{
 		auto varman = instance->GetComponent<console::Context>()->GetVariableManager();
 		{
+			//TODO: Bubble up the nullptr
 			auto u = varman->FindEntryRaw("FX_USERNAME");
 			if (u != nullptr) {
 				return u->GetValue();
@@ -109,6 +111,7 @@ namespace fs {
 	{
 		auto varman = instance->GetComponent<console::Context>()->GetVariableManager();
 		{
+			//TODO: Bubble up the nullptr
 			auto u = varman->FindEntryRaw("FX_PASSWORD");
 			if (u != nullptr) {
 				return u->GetValue();

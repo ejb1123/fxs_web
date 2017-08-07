@@ -25,7 +25,6 @@ SOFTWARE.
 #include <ServerInstanceBase.h>
 #include <HttpServerManager.h>
 #include <ResourceManager.h>
-#include <json.hpp>
 #include <fs_utils.h>
 #include <InfoData.h>
 #include "PlayerInfo.h"
@@ -35,8 +34,7 @@ SOFTWARE.
 #include <regex>
 
 
-using json = nlohmann::json;
-bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password);
+//bool isAuthed(fwRefContainer<net::HttpRequest> const request, fwRefContainer<net::HttpResponse> const response, std::string rcon_password);
 static bool doesmatch(const std::string &path, std::smatch &matches, const std::regex &regex) {
 	return std::regex_match(path.begin(), path.end(), matches, regex, std::regex_constants::match_default);
 }
@@ -53,13 +51,13 @@ static InitFunction initFunction([]()
 		trace("creating fs server", "fs-web");
 		static const std::regex playersNETID("^\/fsdata\/players\/(\\d{1,3})", std::regex::ECMAScript);
 		static const std::regex playersNETIDActions("^\/fsdata\/players\/(\\d{1,3})\/actions\/(kick|ban|message)", std::regex::ECMAScript);
-
+		//TODO add end regex string to regexes to tighten things down
 		static const std::regex players("^\/fsdata\/players", std::regex::ECMAScript);
 		static const std::regex server("^\/fsdata\/server", std::regex::ECMAScript);
 		static const std::regex resources("^\/fsdata\/resources", std::regex::ECMAScript);
 		static const std::regex logregex("^\/fsdata\/log",std::regex::ECMAScript);
-		static const std::regex logAction("^\/fsdata\/log\/actions\/(clear)", std::regex::ECMAScript);
-		static const std::smatch l;
+		static const std::regex logAction("^\/fsdata\/log\/actions\/(clear|rotate)", std::regex::ECMAScript);
+		static std::smatch l;
 		instance->GetComponent<fx::HttpServerManager>()->AddEndpoint("/fsdata", [=](const fwRefContainer<net::HttpRequest>&request, const fwRefContainer<net::HttpResponse>& response)
 		{
 			if (fs::isAuthed(request, response, instance)) {
@@ -70,13 +68,13 @@ static InitFunction initFunction([]()
 						response->SetStatusCode(200);
 						response->End(playerData->jsonData.dump());
 					}
-
+					//TODO rename l varible
 					if (doesmatch(request->GetPath(), l, playersNETIDActions)) {
 						
 						if (l[2] == "kick") {
 							response->End("player " + l[1].str() + " has been kicked");
 						}
-						if (l[2] == "kick") {
+						if (l[2] == "message") {
 							response->End("player " + l[1].str() + " has gotten your message");
 						}
 						if (l[2] == "ban") {
@@ -94,6 +92,7 @@ static InitFunction initFunction([]()
 
 					if (doesmatch(request->GetPath(), l, resources)) {
 						resourceData->update();
+						response->SetStatusCode(200);
 						response->End(resourceData->info.dump());
 					}
 
@@ -116,8 +115,12 @@ static InitFunction initFunction([]()
 						response->SetHeader("Content-Type", "text/plain");
 						response->End(log);
 					}
+
 					if (doesmatch(request->GetPath(), l, logAction))
 					{
+						if (l[1] == "rotate") {
+							//TODO: implement log rotation
+						}
 						if (l[1] == "clear") {
 							std::fstream logFile;
 							logFile.open(MakeRelativeCitPath(L"CitizenFX.log").c_str(), std::ios::out | std::ios::trunc);

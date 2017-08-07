@@ -21,7 +21,7 @@ public:
 
 bool ComponentInstance::Initialize()
 {
-	std::cout << "hh";
+	std::cout << "\n\nhh\n\n";
 	InitFunctionBase::RunAll();
 
 	return true;
